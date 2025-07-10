@@ -5,18 +5,7 @@ interface ToolCallsSectionProps {
 }
 
 export const ToolCallsSection = ({ toolCalls }: ToolCallsSectionProps) => (
-  <div
-    id="chain-of-thought-container"
-    style={{
-      flex: 1,
-      overflowY: "auto",
-      backgroundColor: "#fff",
-      display: "flex",
-      flexDirection: "column",
-      gap: "20px",
-      padding: "20px",
-    }}
-  >
+  <div id="chain-of-thought-container">
     {toolCalls.map((item, idx) => (
       <div key={idx} style={{ marginBottom: "20px" }}>
         <div className="thought-question">

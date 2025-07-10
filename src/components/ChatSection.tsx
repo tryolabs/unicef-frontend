@@ -11,6 +11,10 @@ interface ChatSectionProps {
   switchTab: (tab: "chat" | "tools") => void;
   askQuestion: (question: string) => Promise<void>;
   isLoading: boolean;
+  leftWidth?: number;
+  onWidthChange?: (width: number) => void;
+  minLeftWidth?: number;
+  minRightWidth?: number;
 }
 
 export const ChatSection = ({
@@ -20,12 +24,20 @@ export const ChatSection = ({
   switchTab,
   askQuestion,
   isLoading,
+  leftWidth,
+  onWidthChange,
+  minLeftWidth,
+  minRightWidth,
 }: ChatSectionProps) => (
-  <div
-    className="chat-section"
-    style={{ flex: 0.4, display: "flex", flexDirection: "column" }}
-  >
-    <TabNav activeTab={activeTab} switchTab={switchTab} />
+  <div className="chat-section">
+    <TabNav
+      activeTab={activeTab}
+      switchTab={switchTab}
+      leftWidth={leftWidth}
+      onWidthChange={onWidthChange}
+      minLeftWidth={minLeftWidth}
+      minRightWidth={minRightWidth}
+    />
 
     {activeTab === "chat" && (
       <ChatMessages messageHistory={messageHistory} askQuestion={askQuestion} />
