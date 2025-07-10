@@ -29,7 +29,7 @@ export const useChat = () => {
 
   const processStreamChunk = useCallback((data: any, question: string) => {
     const traceId = data.trace_id;
-    const isThinkingChunk = traceId?.startsWith("th_");
+    const isThinkingChunk = data.is_thinking;
 
     if (data.html_content && data.html_content !== "") {
       setMapHTML(data.html_content);
