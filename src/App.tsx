@@ -3,12 +3,16 @@ import { MapContainer } from "./components/MapContainer";
 import { ChatSection } from "./components/ChatSection";
 import { UserGuide } from "./components/UserGuide";
 import { ResizableLayout } from "./components/ResizableLayout";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { AuthProvider } from "./contexts/AuthContext";
 import { useChat } from "./hooks/useChat";
+import { useAuth } from "./contexts/AuthContext";
 
-export const App = () => {
+const MainApp = () => {
   const [activeTab, setActiveTab] = useState<"chat" | "tools">("chat");
   const [showUserGuide, setShowUserGuide] = useState(false);
   const [leftWidth, setLeftWidth] = useState(50);
+  const { user, logout } = useAuth();
   const { messageHistory, toolCalls, mapHTML, isLoading, askQuestion } =
     useChat();
 
@@ -40,6 +44,7 @@ export const App = () => {
             </div>
           </div>
           <div className="header-actions">
+            <span className="user-info">Welcome, {user?.username}</span>
             <button
               className="help-button"
               onClick={() => setShowUserGuide(true)}
@@ -57,6 +62,21 @@ export const App = () => {
                 <line x1="12" y1="17" x2="12" y2="17" />
               </svg>
               Help
+            </button>
+            <button className="logout-button" onClick={logout}>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16,17 21,12 16,7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              Logout
             </button>
           </div>
         </div>
@@ -90,5 +110,15 @@ export const App = () => {
         onClose={() => setShowUserGuide(false)}
       />
     </div>
+  );
+};
+
+export const App = () => {
+  return (
+    <AuthProvider>
+      <ProtectedRoute>
+        <MainApp />
+      </ProtectedRoute>
+    </AuthProvider>
   );
 };

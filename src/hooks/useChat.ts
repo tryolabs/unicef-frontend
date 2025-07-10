@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import type { Message } from "../types/Message";
 import { API_URL } from "../utils/constants";
+import { useAuth } from "../contexts/AuthContext";
 
 export type ToolCall = {
   question: string;
@@ -22,6 +23,7 @@ export const useChat = () => {
   const [toolCalls, setToolCalls] = useState<ToolCall[]>([]);
   const [mapHTML, setMapHTML] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { token } = useAuth();
 
   useEffect(() => {
     setSessionId(generateUUID());
@@ -121,9 +123,17 @@ export const useChat = () => {
       setIsLoading(true);
 
       try {
+        const headers: Record<string, string> = {
+          "Content-Type": "application/json",
+        };
+
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+
         const response = await fetch(`${API_URL}/ask`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify({
             chat_messages: [...messageHistory, userMessage],
             session_id: sessionId,
@@ -170,7 +180,7 @@ export const useChat = () => {
         setIsLoading(false);
       }
     },
-    [messageHistory, sessionId, processStreamChunk]
+    [messageHistory, sessionId, processStreamChunk, token]
   );
 
   return {
