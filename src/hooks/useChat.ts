@@ -30,6 +30,10 @@ export const useChat = () => {
   const processStreamChunk = useCallback((data: any, question: string) => {
     const traceId = data.trace_id;
     const isThinkingChunk = traceId?.startsWith("th_");
+    
+    if (data.html_content && data.html_content !== "") {
+      setMapHTML(data.html_content);
+    }
 
     if (data.response !== undefined) {
       const formattedResponse = data.response
@@ -64,10 +68,6 @@ export const useChat = () => {
         }
         return newHistory;
       });
-    }
-
-    if (data.is_html && data.html_content) {
-      setMapHTML(data.html_content);
     }
 
     if (data.tool_call) {
