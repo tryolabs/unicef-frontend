@@ -30,15 +30,22 @@ export const useChat = () => {
   const processStreamChunk = useCallback((data: any, question: string) => {
     const traceId = data.trace_id;
     const isThinkingChunk = traceId?.startsWith("th_");
-    
+
     if (data.html_content && data.html_content !== "") {
       setMapHTML(data.html_content);
     }
 
     if (data.response !== undefined) {
-      const formattedResponse = data.response
-        .replace("Thought", "**Thought**")
-        .replace("Answer", "**Answer**");
+      let formattedResponse = data.response;
+
+      // Check if this is a "Thought" and if we need to add a line break
+      if (formattedResponse.includes("Thought")) {
+        formattedResponse = formattedResponse.replace("Thought", "**Thought**");
+      }
+
+      if (formattedResponse.includes("Answer")) {
+        formattedResponse = formattedResponse.replace("Answer", "\n**Answer**");
+      }
 
       setMessageHistory((prev) => {
         const newHistory = [...prev];
@@ -51,9 +58,18 @@ export const useChat = () => {
 
         if (messageIndex >= 0) {
           // Update existing message
+          const existingContent = newHistory[messageIndex].content;
+
+          if (
+            formattedResponse.includes("**Thought**") &&
+            existingContent.includes("**Thought**")
+          ) {
+            formattedResponse = "\n" + formattedResponse;
+          }
+
           newHistory[messageIndex] = {
             ...newHistory[messageIndex],
-            content: newHistory[messageIndex].content + formattedResponse,
+            content: existingContent + formattedResponse,
             is_finished: data.is_finished || false,
           };
         } else if (formattedResponse) {
