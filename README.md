@@ -17,6 +17,8 @@ This project contains the UNICEF Geospatial Analysis Assistant frontend applicat
 - **Vite** for build tooling
 - **Langfuse** for feedback and analytics
 - **React Markdown** for message rendering
+- **Framer Motion** for animations
+- **Lucide React** for icons
 
 ## Project Structure
 
@@ -29,17 +31,34 @@ src/
 │   ├── MapContainer.tsx  # Map visualization
 │   ├── TabNav.tsx        # Tab navigation
 │   ├── ToolCallsSection.tsx # Tool calls display
-│   └── UserGuide.tsx     # User documentation
+│   ├── UserGuide.tsx     # User documentation
+│   ├── MessageBubble.tsx # Individual message rendering
+│   ├── FeedbackButtons.tsx # User feedback interface
+│   ├── ExampleQuestions.tsx # Quick-start questions
+│   └── ResizableLayout.tsx # Responsive layout management
 ├── types/               # TypeScript type definitions
 │   └── Message.tsx      # Message interface
+├── hooks/               # Custom React hooks
+│   ├── useChat.ts       # Chat state management
+│   └── useFeedback.ts   # Feedback functionality
+├── contexts/            # React contexts
+│   └── AuthContext.tsx  # Authentication context
 ├── utils/               # Utility functions
 │   └── constants.ts     # API constants
+├── styles/              # CSS and styling
 ├── App.tsx              # Main application component
 ├── main.tsx             # Application entry point
 └── index.css            # Global styles
 ```
 
 ## Getting Started
+
+### Prerequisites
+
+- **Node.js**: Version 22
+- **npm**: Version 10 (comes with Node.js)
+
+### Installation
 
 1. **Install dependencies**:
 
@@ -53,44 +72,74 @@ src/
    npm run dev
    ```
 
-3. **Build for production**:
-   ```bash
-   npm run build
-   ```
-
-## Environment Variables
-
-The application expects the following environment variables:
-
-- `VITE_LANGFUSE_PUBLIC_KEY`: Public key for Langfuse integration
-- `VITE_BACKEND_URL`: URL of the backend API (optional)
+3. **Access the application**:
+   - Development: `http://localhost:5173`
+   - The port may vary if 5173 is occupied
 
 ## API Integration
 
 The application communicates with the backend through:
 
-- **POST /api/ask**: Submit questions and receive streaming responses
-- Supports both thinking and final responses
-- Real-time map HTML content updates
-- Tool call tracking
+### Main Endpoint
 
-## Migration Notes
+**POST `/api/ask`**: Submit questions and receive streaming responses
 
-This project was migrated from `unicef-geospatial/frontend` with the following changes:
+**Request Format**:
 
-- **Removed**: All authentication-related functionality
+```typescript
+{
+  chat_messages: Message[];
+  session_id: string;
+}
 
-  - Login component
-  - AuthService
-  - Authentication types
-  - Auth-related API calls
+interface Message {
+  content: string;
+  role: "user" | "assistant";
+  trace_id?: string;
+  is_thinking?: boolean;
+  is_finished?: boolean;
+}
+```
 
-- **Preserved**: All core functionality
-  - Chat interface
-  - Map visualization
-  - Tool calls display
-  - User guide
-  - Feedback system
-  - Streaming responses
+**Response Format** (Streaming):
 
-The application now runs without authentication requirements, making it suitable for public access or integration with different authentication systems.
+```typescript
+// Thinking stream chunk
+{
+  response: string;
+  is_thinking: true;
+  trace_id: string;
+  is_finished: boolean;
+}
+
+// Tool call chunk
+{
+  tool_call: {
+    name: string;
+    args: Record<string, any>;
+  }
+  trace_id: string;
+}
+
+// Final response chunk
+{
+  response: string;
+  is_thinking: false;
+  trace_id: string;
+  is_finished: true;
+}
+
+// Map content chunk
+{
+  html_content: string;
+  trace_id: string;
+}
+```
+
+## Support
+
+- **Issues**: Submit issues on GitHub repository
+- **React Documentation**: [React Official Docs](https://react.dev/)
+- **Vite Documentation**: [Vite Build Tool](https://vitejs.dev/)
+- **TypeScript Guide**: [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- **Technical Support**: Repository maintainers
