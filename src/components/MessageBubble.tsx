@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { FeedbackButtons } from "./FeedbackButtons";
 import type { Message } from "../types/Message";
 
@@ -28,7 +29,7 @@ export const MessageBubble = ({ message }: MessageBubbleProps) => {
       {isThinking && <div className="thinking-label">Thinking...</div>}
 
       <div className={`message ${getBubbleClassName()}`}>
-        <ReactMarkdown>{content}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       </div>
 
       {!isUser && !isThinking && is_finished && (

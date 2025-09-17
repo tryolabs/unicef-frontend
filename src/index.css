@@ -1136,6 +1136,42 @@ button:disabled {
   margin: var(--spacing-lg) 0;
 }
 
+/* Tables inside messages */
+.message table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--spacing-md) 0;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+}
+
+.message thead tr {
+  background: linear-gradient(135deg, var(--light-gray) 0%, #f1f5f9 100%);
+}
+
+.message th,
+.message td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+}
+
+.message th {
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.message tbody tr:hover {
+  background: rgba(28, 171, 226, 0.04);
+}
+
+.message tbody tr:last-child td {
+  border-bottom: none;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .app-header {
