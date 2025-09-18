@@ -38,15 +38,30 @@ export const useChat = () => {
     }
 
     if (data.response !== undefined) {
-      let formattedResponse = data.response;
+      let formattedResponse = data.response as string;
 
-      // Check if this is a "Thought" and if we need to add a line break
-      if (formattedResponse.includes("Thought")) {
-        formattedResponse = formattedResponse.replace("Thought", "**Thought**");
-      }
-
-      if (formattedResponse.includes("Answer")) {
-        formattedResponse = formattedResponse.replace("Answer", "\n**Answer**");
+      // During thinking, bold Thought but never surface any 'Answer' section
+      if (isThinkingChunk) {
+        if (formattedResponse.includes("Thought")) {
+          formattedResponse = formattedResponse.replace(
+            "Thought",
+            "**Thought**"
+          );
+        }
+        // Trim out any 'Answer' header and anything after it (case-insensitive)
+        const answerHeaderMatch =
+          formattedResponse.search(/(^|\n)\s*Answer\b/i);
+        if (answerHeaderMatch !== -1) {
+          formattedResponse = formattedResponse
+            .slice(0, answerHeaderMatch)
+            .trimEnd();
+        }
+      } else {
+        // For non-thinking chunks (final response), format the Answer header nicely
+        formattedResponse = formattedResponse.replace(
+          /(^|\n)\s*Answer\b/,
+          "\n**Answer**"
+        );
       }
 
       setMessageHistory((prev) => {
@@ -57,6 +72,10 @@ export const useChat = () => {
             msg.is_thinking === isThinkingChunk &&
             !msg.is_finished
         );
+
+        if (!formattedResponse) {
+          return newHistory;
+        }
 
         if (messageIndex >= 0) {
           // Update existing message
