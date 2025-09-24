@@ -12,7 +12,7 @@ const MainApp = () => {
   const [activeTab, setActiveTab] = useState<"chat" | "tools">("chat");
   const [showUserGuide, setShowUserGuide] = useState(false);
   const [leftWidth, setLeftWidth] = useState(50);
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const { messageHistory, toolCalls, mapHTML, isLoading, askQuestion } =
     useChat();
 
