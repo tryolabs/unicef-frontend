@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useRef } from "react";
 import { MessageBubble } from "./MessageBubble";
 import { ExampleQuestions } from "./ExampleQuestions";
 import type { Message } from "../types/Message";
@@ -11,9 +12,33 @@ export const ChatMessages = ({
   messageHistory,
   askQuestion,
 }: ChatMessagesProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // Create a lightweight signature so we auto-scroll when the latest message content changes
+  const latestSignature = useMemo(() => {
+    if (messageHistory.length === 0) return "";
+    const last = messageHistory[messageHistory.length - 1];
+    return `${last.trace_id}:${last.content?.length || 0}:${
+      last.is_finished ? 1 : 0
+    }:${last.is_thinking ? 1 : 0}`;
+  }, [messageHistory]);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, [latestSignature]);
+
   if (messageHistory.length === 0) {
     return (
-      <div id="chat-container" style={{ flex: 1, overflowY: "auto" }}>
+      <div
+        id="chat-container"
+        ref={containerRef}
+        style={{ flex: 1, overflowY: "auto" }}
+        role="log"
+        aria-live="polite"
+        aria-relevant="additions text"
+      >
         <div className="welcome-container">
           <h3>Welcome to UNICEF Geospatial Analysis Assistant</h3>
           <p>
@@ -26,7 +51,14 @@ export const ChatMessages = ({
   }
 
   return (
-    <div id="chat-container" style={{ flex: 1, overflowY: "auto" }}>
+    <div
+      id="chat-container"
+      ref={containerRef}
+      style={{ flex: 1, overflowY: "auto" }}
+      role="log"
+      aria-live="polite"
+      aria-relevant="additions text"
+    >
       {messageHistory.map((message) => (
         <MessageBubble key={message.trace_id} message={message} />
       ))}

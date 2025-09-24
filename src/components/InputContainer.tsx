@@ -13,31 +13,52 @@ export const InputContainer = ({
   const [inputValue, setInputValue] = useState("");
 
   const handleSend = async () => {
-    if (inputValue.trim()) {
-      await askQuestion(inputValue);
-      setInputValue("");
-    }
+    if (isLoading) return; // Prevent multiple sends while processing
+    const trimmed = inputValue.trim();
+    if (!trimmed) return;
+    // Clear immediately for responsive UX
+    setInputValue("");
+    await askQuestion(trimmed);
   };
 
-  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && inputValue.trim()) {
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       handleSend();
     }
   };
 
   return (
-    <div id="input-container" style={{ display: "flex" }}>
-      <input
-        type="text"
+    <div
+      id="input-container"
+      style={{ display: "flex", gap: "8px", alignItems: "flex-end" }}
+    >
+      <textarea
         id="question-input"
-        style={{ flexGrow: 1, padding: "12px", fontSize: "14px" }}
+        aria-label="Message input"
         placeholder="Ask about global indicators, climate data, or request spatial analysis..."
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        onKeyPress={handleKeyPress}
-        disabled={isLoading}
+        onKeyDown={handleKeyDown}
+        rows={1}
+        style={{
+          flexGrow: 1,
+          padding: "12px",
+          fontSize: "14px",
+          resize: "vertical",
+          lineHeight: "22px",
+        }}
       />
-      <button onClick={handleSend} disabled={isLoading || !inputValue.trim()}>
+      <button
+        onClick={handleSend}
+        aria-label="Send message"
+        disabled={isLoading || !inputValue.trim()}
+        style={{
+          minHeight: 46,
+          padding: "10px 18px",
+          borderRadius: 15,
+        }}
+      >
         {isLoading ? "Sending..." : "Send"}
       </button>
     </div>
