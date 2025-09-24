@@ -626,6 +626,30 @@ body {
   z-index: 1;
 }
 
+/* Avatars */
+.message-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin: 0 8px;
+  box-shadow: var(--shadow-sm);
+  user-select: none;
+}
+
+.assistant-avatar {
+  background: var(--unicef-light-blue);
+  color: var(--unicef-dark-blue);
+}
+
+.user-avatar {
+  background: #e6f7ff;
+  color: #0b72b9;
+}
+
 .thinking-label {
   position: absolute;
   top: -8px;
@@ -741,6 +765,35 @@ body {
   border-top: 1px solid var(--border-color);
   flex-shrink: 0;
   position: relative;
+}
+
+/* Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Screen-reader only utility */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
 #input-container::before {

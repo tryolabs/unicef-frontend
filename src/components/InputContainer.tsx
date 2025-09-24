@@ -4,11 +4,13 @@ import type { KeyboardEvent } from "react";
 interface InputContainerProps {
   askQuestion: (question: string) => Promise<void>;
   isLoading: boolean;
+  error?: string | null;
 }
 
 export const InputContainer = ({
   askQuestion,
   isLoading,
+  error,
 }: InputContainerProps) => {
   const [inputValue, setInputValue] = useState("");
 
@@ -32,6 +34,7 @@ export const InputContainer = ({
     <div
       id="input-container"
       style={{ display: "flex", gap: "8px", alignItems: "flex-end" }}
+      aria-busy={isLoading}
     >
       <textarea
         id="question-input"
@@ -59,8 +62,20 @@ export const InputContainer = ({
           borderRadius: 15,
         }}
       >
-        {isLoading ? "Sending..." : "Send"}
+        {isLoading ? (
+          <>
+            <span className="spinner" aria-hidden="true" />
+            Sending...
+          </>
+        ) : (
+          "Send"
+        )}
       </button>
+      {error && (
+        <div role="status" aria-live="polite" className="sr-only">
+          {error}
+        </div>
+      )}
     </div>
   );
 };

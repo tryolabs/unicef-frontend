@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { MessageBubble } from "./MessageBubble";
 import { ExampleQuestions } from "./ExampleQuestions";
 import type { Message } from "../types/Message";
+import { useAutoScroll } from "../hooks/useAutoScroll";
 
 interface ChatMessagesProps {
   messageHistory: Message[];
@@ -12,8 +13,6 @@ export const ChatMessages = ({
   messageHistory,
   askQuestion,
 }: ChatMessagesProps) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
   // Create a lightweight signature so we auto-scroll when the latest message content changes
   const latestSignature = useMemo(() => {
     if (messageHistory.length === 0) return "";
@@ -23,11 +22,7 @@ export const ChatMessages = ({
     }:${last.is_thinking ? 1 : 0}`;
   }, [messageHistory]);
 
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    el.scrollTop = el.scrollHeight;
-  }, [latestSignature]);
+  const containerRef = useAutoScroll([latestSignature]);
 
   if (messageHistory.length === 0) {
     return (

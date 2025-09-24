@@ -23,6 +23,7 @@ export const useChat = () => {
   const [toolCalls, setToolCalls] = useState<ToolCall[]>([]);
   const [mapHTML, setMapHTML] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const { token } = useAuth();
 
   useEffect(() => {
@@ -131,6 +132,7 @@ export const useChat = () => {
   const askQuestion = useCallback(
     async (question: string): Promise<void> => {
       if (!question.trim()) return;
+      setError(null);
 
       const userMessage: Message = {
         content: question,
@@ -187,6 +189,9 @@ export const useChat = () => {
         }
       } catch (error) {
         console.error(error);
+        setError(
+          "Sorry, there was a problem sending your message. Please try again."
+        );
         setMessageHistory((prev) => [
           ...prev,
           {
@@ -207,6 +212,7 @@ export const useChat = () => {
     toolCalls,
     mapHTML,
     isLoading,
+    error,
     askQuestion,
   };
 };

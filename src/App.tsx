@@ -13,7 +13,7 @@ const MainApp = () => {
   const [showUserGuide, setShowUserGuide] = useState(false);
   const [leftWidth, setLeftWidth] = useState(50);
   const { logout } = useAuth();
-  const { messageHistory, toolCalls, mapHTML, isLoading, askQuestion } =
+  const { messageHistory, toolCalls, mapHTML, isLoading, error, askQuestion } =
     useChat();
 
   return (
@@ -92,6 +92,7 @@ const MainApp = () => {
               switchTab={setActiveTab}
               askQuestion={askQuestion}
               isLoading={isLoading}
+              error={error}
               leftWidth={leftWidth}
               onWidthChange={setLeftWidth}
               minLeftWidth={35}

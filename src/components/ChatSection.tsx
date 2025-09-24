@@ -11,6 +11,7 @@ interface ChatSectionProps {
   switchTab: (tab: "chat" | "tools") => void;
   askQuestion: (question: string) => Promise<void>;
   isLoading: boolean;
+  error?: string | null;
   leftWidth?: number;
   onWidthChange?: (width: number) => void;
   minLeftWidth?: number;
@@ -24,6 +25,7 @@ export const ChatSection = ({
   switchTab,
   askQuestion,
   isLoading,
+  error,
   leftWidth,
   onWidthChange,
   minLeftWidth,
@@ -46,7 +48,11 @@ export const ChatSection = ({
     {activeTab === "tools" && <ToolCallsSection toolCalls={toolCalls} />}
 
     {activeTab === "chat" && (
-      <InputContainer askQuestion={askQuestion} isLoading={isLoading} />
+      <InputContainer
+        askQuestion={askQuestion}
+        isLoading={isLoading}
+        error={error}
+      />
     )}
   </div>
 );

@@ -103,16 +103,22 @@ export const TabNav = ({
   }, [leftWidth, isEditingLeft, isEditingRight]);
 
   return (
-    <div className="tab-container">
+    <div className="tab-container" role="tablist" aria-label="Sections">
       <div className="tab-section">
         <button
           className={`tab ${activeTab === "chat" ? "active" : ""}`}
+          role="tab"
+          aria-selected={activeTab === "chat"}
+          aria-controls="chat-panel"
           onClick={() => switchTab("chat")}
         >
           Chat
         </button>
         <button
           className={`tab ${activeTab === "tools" ? "active" : ""}`}
+          role="tab"
+          aria-selected={activeTab === "tools"}
+          aria-controls="tools-panel"
           onClick={() => switchTab("tools")}
         >
           Tools
