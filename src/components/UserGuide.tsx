@@ -1,24 +1,9 @@
+import { useMemo } from "react";
+
 interface UserGuideProps {
   isVisible: boolean;
   onClose: () => void;
 }
-
-const DATA_TYPES = [
-  {
-    title: "🌍 Geospatial Data",
-    items: ["Floods data", "Heatwaves data", "Demographic data"],
-  },
-  {
-    title: "📊 UNICEF Indicators",
-    items: [
-      "Child mortality",
-      "Education access",
-      "Nutrition status",
-      "Water and sanitation",
-      "Health coverage",
-    ],
-  },
-];
 
 const CAPABILITIES = [
   {
@@ -39,6 +24,36 @@ const CAPABILITIES = [
 ];
 
 export const UserGuide = ({ isVisible, onClose }: UserGuideProps) => {
+  const datasets = useMemo(
+    () => ({
+      geospatial: [
+        "Children Population",
+        "Floods",
+        "Drought",
+        "Heatwaves",
+        "Fire",
+        "Sand/Dust Storms",
+        "Air Pollution",
+        "Malaria",
+        "Risk Index",
+      ],
+      datawarehouse: [
+        "Child Poverty",
+        "Child Mortality",
+        "Demography",
+        "Education",
+        "HIV/AIDS",
+        "Immunisation",
+        "Nutrition",
+        "Child Marriage",
+        "WASH in Healthcare Facilities",
+        "Household WASH",
+        "Subnational WASH",
+      ],
+    }),
+    []
+  );
+
   if (!isVisible) return null;
 
   return (
@@ -84,16 +99,26 @@ export const UserGuide = ({ isVisible, onClose }: UserGuideProps) => {
           <div className="guide-section">
             <h3>Available Data</h3>
             <div className="data-types">
-              {DATA_TYPES.map(({ title, items }) => (
-                <div key={title} className="data-type">
-                  <h4>{title}</h4>
-                  <ul>
-                    {items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+              <div className="data-type">
+                <h4>🌍 Geospatial Data</h4>
+                <ul>
+                  {datasets.geospatial.map((name) => (
+                    <li key={name}>
+                      <strong>{name}</strong>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="data-type">
+                <h4>📊 UNICEF Indicators</h4>
+                <ul>
+                  {datasets.datawarehouse.map((name) => (
+                    <li key={name}>
+                      <strong>{name}</strong>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>

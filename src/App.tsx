@@ -44,7 +44,7 @@ const MainApp = () => {
             </div>
           </div>
           <div className="header-actions">
-            <span className="user-info">Welcome, {user?.username}</span>
+            <span className="user-info">{user?.username}</span>
             <button
               className="help-button"
               onClick={() => setShowUserGuide(true)}
