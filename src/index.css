@@ -884,7 +884,7 @@ button:disabled {
 
 /* Keep send button width stable across states */
 .send-button {
-  min-width: 110px;
+  width: 120px;
   display: inline-flex;
   align-items: center;
   justify-content: center;

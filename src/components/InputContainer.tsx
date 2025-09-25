@@ -66,7 +66,7 @@ export const InputContainer = ({
         {isLoading ? (
           <>
             <span className="spinner" aria-hidden="true" />
-            Sending...
+            Sending
           </>
         ) : (
           "Send"
