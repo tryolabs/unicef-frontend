@@ -53,6 +53,7 @@ export const InputContainer = ({
         }}
       />
       <button
+        className="send-button"
         onClick={handleSend}
         aria-label="Send message"
         disabled={isLoading || !inputValue.trim()}

@@ -29,7 +29,6 @@ export const ChatMessages = ({
       <div
         id="chat-container"
         ref={containerRef}
-        style={{ flex: 1, overflowY: "auto" }}
         role="log"
         aria-live="polite"
         aria-relevant="additions text"
@@ -49,7 +48,6 @@ export const ChatMessages = ({
     <div
       id="chat-container"
       ref={containerRef}
-      style={{ flex: 1, overflowY: "auto" }}
       role="log"
       aria-live="polite"
       aria-relevant="additions text"

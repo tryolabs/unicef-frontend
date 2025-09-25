@@ -589,7 +589,7 @@ body {
 
 /* Message Containers */
 .message-container {
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
   animation: fadeInUp 0.4s ease-out;
 }
 
@@ -667,14 +667,15 @@ body {
 
 .message {
   max-width: 85%;
-  padding: calc(var(--spacing-xs) + var(--spacing-xs)) var(--spacing-md)
-    var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--border-radius);
-  font-size: 0.95rem;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Noto Sans", sans-serif;
+  font-size: clamp(0.9rem, 0.88rem + 0.12vw, 0.98rem);
   line-height: 1.6;
   position: relative;
-  word-wrap: break-word;
-  backdrop-filter: blur(10px);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .message > *:first-child {
@@ -686,12 +687,8 @@ body {
 }
 
 .user-message {
-  background: linear-gradient(
-    135deg,
-    var(--unicef-blue) 0%,
-    var(--unicef-dark-blue) 100%
-  );
-  color: white;
+  background: linear-gradient(135deg, #1599cc 0%, #0f7a9c 100%);
+  color: #ffffff;
   border-bottom-right-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
 }
@@ -702,6 +699,23 @@ body {
   border: 1px solid var(--border-color);
   border-bottom-left-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
+}
+
+/* Link styles inside messages */
+.message a {
+  color: var(--unicef-dark-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.user-message a {
+  color: #ffffff;
+}
+
+/* Inline code styles adapt to bubble contrast */
+.user-message code {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
 }
 
 .thinking-message {
@@ -866,6 +880,15 @@ button:disabled {
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+
+/* Keep send button width stable across states */
+.send-button {
+  min-width: 110px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
 }
 
 /* Tool Calls Section */
@@ -1270,9 +1293,15 @@ button:disabled {
     flex-direction: column;
   }
 
+  .message-container {
+    margin-bottom: var(--spacing-md);
+  }
+
   .message {
     max-width: 95%;
-    font-size: 0.9rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.875rem;
+    line-height: 1.55;
   }
 
   #question-input {
