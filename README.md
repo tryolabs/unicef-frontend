@@ -78,11 +78,11 @@ src/
 
 ## API Integration
 
-The application communicates with the backend through:
+The application communicates with the backend through Nginx proxying `/api/*` to the agent service:
 
 ### Main Endpoint
 
-**POST `/api/ask`**: Submit questions and receive streaming responses
+**POST `/api/ask`**: Submit questions and receive streaming responses (proxied to the agent `/ask` endpoint)
 
 **Request Format**:
 
